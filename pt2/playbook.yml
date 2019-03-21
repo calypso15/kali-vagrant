@@ -5,26 +5,27 @@
   - name: Update repositories cache
     apt:
       update_cache: yes
-#      upgrade: dist
+      cache_valid_time: 86400
+      upgrade: dist
 
-#  - name: Install a list of packages
-#    apt:
-#      name: "{{ packages }}"
-#    vars:
-#      packages:
-#      - tmux
-#      - git
-#      - apache2
-#      - postgresql
-#      - metasploit-framework
-#      - dirb
-#      - sqlmap
-#      - tshark
-#      - john
-#      - hydra
-#      - aircrack-ng
-#      - nikto
-#      - wordlists
+  - name: Install a list of packages
+    apt:
+     name: "{{ packages }}"
+    vars:
+      packages:
+      - dirb
+      - sqlmap
+      - tmux
+      - git
+      - apache2
+      - postgresql
+      - metasploit-framework
+      - tshark
+      - john
+      - hydra
+      - aircrack-ng
+      - nikto
+      - wordlists
 
   - name: Add bash aliases
     lineinfile:
@@ -51,3 +52,4 @@
     - "touch /usr/share/metasploit-framework/.initialized"
     args:
       creates: "/usr/share/metasploit-framework/.initialized"
+      warn: false
