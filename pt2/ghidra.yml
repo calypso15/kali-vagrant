@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    GHIDRA_FILENAME: "ghidra_9.0_PUBLIC_20190228.zip"
+    GHIDRA_DIR: "ghidra_9.0"
+
+  tasks:
+  - name: Download Ghidra
+    get_url:
+      url: "https://ghidra-sre.org/{{ GHIDRA_FILENAME }}"
+      dest: "~/{{ GHIDRA_FILENAME }}"
+      sha256sum: 3b65d29024b9decdbb1148b12fe87bcb7f3a6a56ff38475f5dc9dd1cfc7fd6b2
+      
+  - name: Unzip Ghidra
+    unarchive:
+      remote_src: yes
+      src: "~/{{ GHIDRA_FILENAME }}"
+      dest: /opt
+      
+  - name: Create symlink to Ghidra script     
+    file:
+      src: "/opt/{{ GHIDRA_DIR }}/ghidraRun"
+      dest: /usr/bin/ghidra
+      state: link
+      
+  - name: Install openjdk 11
+    apt:
+      name: openjdk-11-jdk-headless
